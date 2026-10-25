@@ -318,7 +318,7 @@ pub fn open(target: &std::ffi::OsStr) -> Result<(), String> {
 
 /// macOS: opens an `.app` bundle with `open`, handing `args` to the app (`open … --args`).
 pub fn open_app(bundle: &Path, args: &[String]) -> Result<(), String> {
-    let mut cmd = opener(bundle.as_os_str());
+    let mut cmd = opener(bundle.as_os_str())?;
     if !args.is_empty() {
         cmd.arg("--args").args(args);
     }

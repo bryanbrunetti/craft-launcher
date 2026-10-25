@@ -933,7 +933,7 @@ impl LauncherUi {
             }
             Primary::Open => {
                 if widgets::button(ui, tl!("Open"), Kind::Secondary, main_w).clicked() {
-                    self.launch_app(ui.ctx(), &id);
+                    self.launch_app(ui.ctx(), id);
                 }
             }
             Primary::Download(url) => {
@@ -1010,28 +1010,6 @@ impl LauncherUi {
             }
             self.menu_hide(ui, entry, &id);
         });
-    }
-
-    /// The menu items for an installed app: open, reveal in the file manager, reinstall, and
-    /// uninstall (which asks first).
-    fn menu_installed(&mut self, ui: &mut Ui, status: &AppStatus, id: &str, reveal: &'static str) {
-        if ui.button(tl!("Open")).clicked() {
-            self.launch_app(id);
-            ui.close();
-        }
-        if ui.button(t(reveal)).clicked() {
-            self.send(Command::Reveal { app: id.to_string() });
-            ui.close();
-        }
-        if *status == AppStatus::UpToDate && ui.button(tl!("Reinstall")).clicked() {
-            self.install_app(id);
-            ui.close();
-        }
-        ui.separator();
-        if ui.button(RichText::new(tl!("Uninstall…")).color(Tokens::get(ui.ctx()).bad)).clicked() {
-            self.dialog = Some(Dialog::ConfirmUninstall(id.to_string()));
-            ui.close();
-        }
     }
 
     /// Where the system manages installs: a plain-download item per format this platform can
